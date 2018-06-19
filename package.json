@@ -1,0 +1,32 @@
+{
+  "name": "circle-config-creator",
+  "version": "0.0.1",
+  "main": "lib/index.js",
+  "repository": "https://github.com/deecewan/circle-config-creator",
+  "author": "David Buchan-Swanson <david.buchanswanson@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.51",
+    "@babel/core": "^7.0.0-beta.51",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.51",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.51",
+    "@babel/preset-env": "^7.0.0-beta.51",
+    "@babel/preset-flow": "^7.0.0-beta.51",
+    "@deecewan/eslint-config-flow": "^0.0.5",
+    "babel-eslint": "^8.2.3",
+    "eslint": "^4.17.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-flowtype": "^2.49.3",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jest": "^21.17.0",
+    "flow-bin": "^0.74.0",
+    "husky": "^0.14.3",
+    "jest": "^23.1.0",
+    "lint-staged": "^7.2.0",
+    "prettier": "^1.13.5"
+  },
+  "scripts": {
+    "build": "babel -d lib src",
+    "format": "prettier --write 'src/**/*.js'"
+  }
+}
