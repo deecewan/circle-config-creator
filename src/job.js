@@ -62,7 +62,7 @@ function checkName(name) {
 
 export default class Job {
   name: string;
-  state: State;
+  state: State = {};
   // eslint-disable-next-line flowtype/no-weak-types
   steps: Array<Object | string> = [];
 
@@ -127,12 +127,9 @@ export default class Job {
     return this;
   }
 
-  checkout(path: ?string = this.state.working_directory) {
-    this.steps.push({
-      checkout: {
-        path,
-      },
-    });
+  checkout(path: ?string) {
+    const c = path ? { checkout: { path } } : 'checkout';
+    this.steps.push(c);
 
     return this;
   }

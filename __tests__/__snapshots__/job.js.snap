@@ -14,3 +14,28 @@ Object {
 `;
 
 exports[`Job complains if no executor 1`] = `"You must set an executor for \`test_job\`"`;
+
+exports[`Job makes a more complex job 1`] = `
+Object {
+  "test_job": Object {
+    "docker": Array [
+      Object {
+        "image": "test-image:latest",
+      },
+    ],
+    "steps": Array [
+      "checkout",
+      Object {
+        "run": "echo \\"hello, world\\"",
+      },
+      Object {
+        "run": Object {
+          "command": "echo \\"Job is over\\"",
+          "no_output_timeout": undefined,
+          "working_directory": "~/project",
+        },
+      },
+    ],
+  },
+}
+`;
