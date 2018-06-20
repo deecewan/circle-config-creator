@@ -70,6 +70,16 @@ class Image {
 export default class Docker implements Executor {
   images: Array<Image> = [];
 
+  constructor(image: ?string) {
+    if (image != null) {
+      new Image(image, this).done();
+    }
+  }
+
+  image(image: string) {
+    return new Image(image, this);
+  }
+
   compose(): { docker: Array<ImageData> } {
     return {
       docker: this.images.map(i => i.compose()),
