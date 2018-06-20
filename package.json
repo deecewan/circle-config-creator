@@ -13,7 +13,9 @@
     "@babel/preset-env": "^7.0.0-beta.51",
     "@babel/preset-flow": "^7.0.0-beta.51",
     "@deecewan/eslint-config-flow": "^0.0.5",
+    "babel-core": "^7.0.0-0",
     "babel-eslint": "^8.2.3",
+    "babel-jest": "^23.0.1",
     "eslint": "^4.17.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-flowtype": "^2.49.3",
@@ -28,5 +30,6 @@
   "scripts": {
     "build": "babel -d lib src",
     "format": "prettier --write 'src/**/*.js'"
-  }
+  },
+  "dependencies": {}
 }

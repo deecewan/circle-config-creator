@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Job can create a simple job 1`] = `
+Object {
+  "test_job": Object {
+    "docker": Array [
+      Object {
+        "image": "test-image:latest",
+      },
+    ],
+    "steps": Array [],
+  },
+}
+`;
+
+exports[`Job complains if no executor 1`] = `"You must set an executor for \`test_job\`"`;

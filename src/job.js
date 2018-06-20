@@ -50,6 +50,16 @@ function normalizeRunConfig(runConfig: string | RunConfig) {
 // keep track of names to warn if we have a duplicate
 const globalNameList = [];
 
+function checkName(name) {
+  if (process.env.NODE_ENV === 'test') {
+    return;
+  }
+  if (globalNameList.includes(name)) {
+    console.log(`[Warn] Duplicate job name: \`${name}\``);
+  }
+  globalNameList.push(name);
+}
+
 export default class Job {
   name: string;
   state: State;
@@ -57,10 +67,7 @@ export default class Job {
   steps: Array<Object | string> = [];
 
   constructor(name: string) {
-    if (globalNameList.includes(name)) {
-      console.log(`[Warn] Duplicate job name: \`${name}\``);
-    }
-    globalNameList.push(name);
+    checkName(name);
     this.name = name;
   }
 
