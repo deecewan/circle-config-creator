@@ -1,17 +1,58 @@
 /* @flow */
 /* eslint no-console: 0 */
 
-import typeof Branches from './branches';
+import Branches from './branches';
 import { type Executor } from './executors';
 
 type When = 'always' | 'on_success' | 'on_fail';
 type Environment = { [string]: string };
+type ResourceClass =
+  | 'small'
+  | 'medium'
+  | 'medium+'
+  | 'large'
+  | 'xlarge'
+  ;
+
+type RunConfig = {
+  background?: boolean,
+  command: string,
+  environment?: Environment,
+  name?: string,
+  noOutputTimeout?: string,
+  shell?: string,
+  when?: When,
+  workingDirectory?: string,
+};
+
+type State = {
+  environment?: Environment,
+  parallelism?: number,
+  resource_class?: string,
+  shell?: string,
+  working_directory?: string,
+};
+
+function normalizeRunConfig(runConfig: string | RunConfig) {
+  if (typeof runConfig === 'string') {
+    return runConfig;
+  }
+
+  const { noOutputTimeout, workingDirectory, ...rest } = runConfig;
+
+  return {
+    ...rest,
+    no_output_timeout: noOutputTimeout,
+    working_directory: workingDirectory,
+  };
+}
 
 // keep track of names to warn if we have a duplicate
 const globalNameList = [];
 
 export default class Job {
   name: string;
+  state: State;
   // eslint-disable-next-line flowtype/no-weak-types
   steps: Array<Object | string>;
 
@@ -23,32 +64,28 @@ export default class Job {
     this.name = name;
   }
 
-  _shell: string;
   shell(sh: string) {
-    this._shell = sh;
+    this.state.shell = sh;
 
     return this;
   }
 
-  _workingDirectory: string = '~/project';
   workingDirectory(directory: string) {
-    this._workingDirectory = directory;
+    this.state.working_directory = directory;
     return this;
   }
 
-  _parallelism: number = 1;
   parallelism(p: number) {
-    this._parallelism = p;
+    this.state.parallelism = p;
     return this;
   }
 
-  _executor: Executor;
+  exec: Executor;
   executor(executor: Executor) {
-    this._executor = executor;
+    this.exec = executor;
     return this;
   }
 
-  env: Environment;
   environment(key: Environment | string, value: ?string) {
     let e: Environment;
     if (typeof key === 'string') {
@@ -61,7 +98,7 @@ export default class Job {
       e = key;
     }
 
-    Object.assign(this.env, e);
+    Object.assign(this.state.environment, e);
 
     return this;
   }
@@ -69,9 +106,21 @@ export default class Job {
   branchConfig: Branches;
   branches(b: Branches) {
     this.branchConfig = b;
+    return this;
   }
 
-  checkout(path: ?string = this._workingDirectory) {
+  resourceClass(resourceClass: ResourceClass) {
+    this.state.resource_class = resourceClass;
+    return this;
+  }
+
+  run(command: string | RunConfig) {
+    this.steps.push({ run: normalizeRunConfig(command) });
+
+    return this;
+  }
+
+  checkout(path: ?string = this.state.working_directory) {
     this.steps.push({
       checkout: {
         path,
@@ -124,11 +173,9 @@ export default class Job {
     return this;
   }
 
-  deploy(command: string | Array<string>) {
+  deploy(command: string | RunConfig) {
     this.steps.push({
-      deploy: {
-        command: [].concat(command).join('\n'),
-      },
+      deploy: normalizeRunConfig(command),
     });
 
     return this;
@@ -186,5 +233,19 @@ export default class Job {
     }
 
     return this;
+  }
+
+  compose() {
+    if (!this.exec) {
+      throw new Error(`You must set an executor for \`${this.name}\``);
+    }
+    return {
+      [this.name]: {
+        ...this.state,
+        ...this.executor.compose(),
+        ...(this.branchConfig.compose() || {}),
+        steps: this.steps,
+      },
+    };
   }
 }
