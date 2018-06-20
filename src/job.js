@@ -54,7 +54,7 @@ export default class Job {
   name: string;
   state: State;
   // eslint-disable-next-line flowtype/no-weak-types
-  steps: Array<Object | string>;
+  steps: Array<Object | string> = [];
 
   constructor(name: string) {
     if (globalNameList.includes(name)) {
@@ -239,11 +239,14 @@ export default class Job {
     if (!this.exec) {
       throw new Error(`You must set an executor for \`${this.name}\``);
     }
+    const branches = this.branchConfig
+      ? this.branchConfig.compose()
+      : {};
     return {
       [this.name]: {
         ...this.state,
-        ...this.executor.compose(),
-        ...(this.branchConfig.compose() || {}),
+        ...this.exec.compose(),
+        ...branches,
         steps: this.steps,
       },
     };
