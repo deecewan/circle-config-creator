@@ -10,6 +10,7 @@ type Schedule = {
 
 type JobConfig = {
   context?: string,
+  filters?: Branches,
   job: Job,
   requires?: Array<Job>,
   type?: 'approval',
@@ -24,7 +25,7 @@ export default class Workflow {
     this.name = name;
   }
 
-  job(job: Job, requires: ?Array<Job>, type: ?'approval', context: ?string) {
+  job(job: Job, requires: ?Array<Job>, filter: ?Branches, type: ?'approval', context: ?string) {
     const config: JobConfig = { job };
     if (requires) {
       config.requires = requires;
@@ -34,6 +35,9 @@ export default class Workflow {
     }
     if (context) {
       config.context = context;
+    }
+    if (filter) {
+      config.filters = filter;
     }
     this.jobs.push(config);
 
@@ -63,10 +67,14 @@ export default class Workflow {
           const requires = rest.requires
             ? { requires: rest.requires.map(j => j.name) }
             : {};
+          const filters = rest.filters
+            ? { filters: rest.filters.compose()}
+            : {};
           return {
             [job.name]: {
               ...rest,
               ...requires,
+              ...filters,
             },
           };
         }),

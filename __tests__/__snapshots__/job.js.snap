@@ -13,9 +13,82 @@ Object {
 }
 `;
 
-exports[
-  `Job complains if no executor 1`
-] = `"You must set an executor for \`test_job\`"`;
+exports[`Job can progressively restore a cache 1`] = `
+Object {
+  "test-job": Object {
+    "docker": Array [
+      Object {
+        "image": "test-image:latest",
+      },
+    ],
+    "steps": Array [
+      Object {
+        "restore_cache": Object {
+          "keys": Array [
+            "v1-this-is-a-test",
+            "v1-this-is-a-",
+            "v1-this-is-",
+            "v1-this-",
+          ],
+          "name": "Restoring Cache",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`Job can restore a cache progressively with a base 1`] = `
+Object {
+  "test-job": Object {
+    "docker": Array [
+      Object {
+        "image": "test-image:latest",
+      },
+    ],
+    "steps": Array [
+      Object {
+        "restore_cache": Object {
+          "keys": Array [
+            "v1-this-is-a-test",
+            "v1-this-is-a-",
+            "v1-this-is-",
+          ],
+          "name": "Restoring Cache",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`Job can restore a cache progressively with no base (first item) 1`] = `
+Object {
+  "test-job": Object {
+    "docker": Array [
+      Object {
+        "image": "test-image:latest",
+      },
+    ],
+    "steps": Array [
+      Object {
+        "restore_cache": Object {
+          "keys": Array [
+            "v1-this-is-a-test",
+            "v1-this-is-a-",
+            "v1-this-is-",
+            "v1-this-",
+            "v1-",
+          ],
+          "name": "Restoring Cache",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`Job complains if no executor 1`] = `"You must set an executor for \`test_job\`"`;
 
 exports[`Job makes a more complex job 1`] = `
 Object {

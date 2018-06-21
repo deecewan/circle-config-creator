@@ -101,6 +101,8 @@ export default class Job {
       e = key;
     }
 
+    this.state.environment = this.state.environment || {};
+
     Object.assign(this.state.environment, e);
 
     return this;
@@ -171,6 +173,21 @@ export default class Job {
     });
 
     return this;
+  }
+
+  progressiveRestoreCache(key: string, base: ?string) {
+    const b = base == null ? '' : base;
+    console.log('[Warn] Progressive cache restore is very experimental and may not work with every configuration style');
+    if (key.indexOf(b) !== 0) {
+      throw new Error('`key` must start with `base`.');
+    }
+    const keys = [key];
+    const split = key.replace(b, '').split('-');
+    for (let i = split.length - 1; i > (base == null ? 1 : 0); i -= 1) {
+      keys.push(`${b}${split.slice(0, i).join('-')}-`);
+    }
+
+    return this.restoreCache(keys);
   }
 
   deploy(command: string | RunConfig) {

@@ -1,5 +1,189 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`config creates a more complex config 1`] = `
+Object {
+  "jobs": Array [
+    Object {
+      "build": Object {
+        "branches": Object {
+          "ignore": Array [
+            "develop",
+            "feature-.*",
+          ],
+        },
+        "docker": Array [
+          Object {
+            "image": "ubuntu:14.04",
+          },
+          Object {
+            "command": Array [
+              "mongod",
+              "--smallfiles",
+            ],
+            "image": "mongo:2.6.8",
+          },
+          Object {
+            "environment": Object {
+              "POSTGRES_USER": "root",
+            },
+            "image": "postgres:9.4.1",
+          },
+          Object {
+            "image": "redis@sha256:54057dd7e125ca41afe526a877e8bd35ec2cdd33b9217e022ed37bdcf7d09673",
+          },
+          Object {
+            "image": "rabbitmq:3.5.4",
+          },
+        ],
+        "environment": Object {
+          "TEST_REPORTS": "/tmp/test-reports",
+        },
+        "steps": Array [
+          "checkout",
+          Object {
+            "run": Object {
+              "command": "echo 127.0.0.1 devhost | sudo tee -a /etc/hosts",
+              "no_output_timeout": undefined,
+              "working_directory": undefined,
+            },
+          },
+          Object {
+            "run": "-u root createuser -h localhost --superuser ubuntu && sudo createdb -h localhost test_db",
+          },
+          Object {
+            "restore_cache": Object {
+              "keys": Array [
+                "v1-my-project-{{ checksum \\"project.clj\\" }}",
+              ],
+              "name": "Restoring Cache",
+            },
+          },
+          Object {
+            "run": Object {
+              "command": "set -xu
+mkdir -p \${TEST_REPORTS}
+run-tests.sh
+cp out/tests/*.xml \${TEST_REPORTS}",
+              "environment": Object {
+                "SSH_TARGET": "localhost",
+                "TEST_ENV": "linux",
+              },
+              "no_output_timeout": undefined,
+              "working_directory": undefined,
+            },
+          },
+          Object {
+            "run": "set -xu
+mkdir -p /tmp/artifacts
+create_jars.sh \${CIRCLE_BUILD_NUM}
+cp *.jar /tmp/artifacts",
+          },
+          Object {
+            "save_cache": Object {
+              "key": "v1-my-project-{{ checksum \\"project.clj\\" }}",
+              "name": "Saving Cache",
+              "paths": Array [
+                "~/.m2",
+              ],
+              "when": "always",
+            },
+          },
+          Object {
+            "store_artifacts": Object {
+              "destination": "build",
+              "path": "/tmp/artifacts",
+            },
+          },
+          Object {
+            "store_test_results": Object {
+              "path": "/tmp/test-reports",
+            },
+          },
+        ],
+        "working_directory": "~/my-project",
+      },
+    },
+    Object {
+      "deploy-stage": Object {
+        "docker": Array [
+          Object {
+            "image": "ubuntu:14.04",
+          },
+        ],
+        "steps": Array [
+          Object {
+            "run": Object {
+              "command": "ansible-playbook site.yml -i staging",
+              "name": "Deploy if tests pass and branch is Staging",
+              "no_output_timeout": undefined,
+              "working_directory": undefined,
+            },
+          },
+        ],
+        "working_directory": "/tmp/my-project",
+      },
+    },
+    Object {
+      "deploy-prod": Object {
+        "docker": Array [
+          Object {
+            "image": "ubuntu:14.04",
+          },
+        ],
+        "steps": Array [
+          Object {
+            "run": Object {
+              "command": "ansible-playbook site.yml -i production",
+              "name": "Deploy if tests pass and branch is Master",
+              "no_output_timeout": undefined,
+              "working_directory": undefined,
+            },
+          },
+        ],
+        "working_directory": "/tmp/my-project",
+      },
+    },
+  ],
+  "version": "2",
+  "workflows": Object {
+    "build-deploy": Object {
+      "jobs": Array [
+        "build",
+        Object {
+          "deploy-stage": Object {
+            "filters": Object {
+              "branches": Object {
+                "only": Array [
+                  "staging",
+                ],
+              },
+            },
+            "requires": Array [
+              "build",
+            ],
+          },
+        },
+        Object {
+          "deploy-prod": Object {
+            "filters": Object {
+              "branches": Object {
+                "only": Array [
+                  "master",
+                ],
+              },
+            },
+            "requires": Array [
+              "build",
+            ],
+          },
+        },
+      ],
+    },
+    "version": "2",
+  },
+}
+`;
+
 exports[`config creates a simple config 1`] = `
 Object {
   "jobs": Array [

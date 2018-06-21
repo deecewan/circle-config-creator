@@ -31,5 +31,13 @@
     "build": "babel -d lib src",
     "format": "prettier --write 'src/**/*.js'"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "husky": {
+    "hooks": {
+      "precommit": "flow && lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": ["eslint", "prettier"]
+  }
 }

@@ -31,30 +31,44 @@ class Image {
 
   auth(auth: Auth) {
     this.data.auth = auth;
+
+    return this;
   }
 
   awsAuth(awsAuth: AwsAuth) {
     this.data.aws_auth = awsAuth;
+
+    return this;
   }
 
   command(...command: Array<string>) {
     this.data.command = command;
+
+    return this;
   }
 
   entrypoint(...entrypoint: Array<string>) {
     this.data.entrypoint = entrypoint;
+
+    return this;
   }
 
   environment(env: { [string]: string }) {
     this.data.environment = env;
+
+    return this;
   }
 
   name(name: string) {
     this.data.name = name;
+
+    return this;
   }
 
   user(user: string) {
     this.data.user = user;
+
+    return this;
   }
 
   compose() {

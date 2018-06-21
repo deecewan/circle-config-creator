@@ -29,4 +29,28 @@ describe('Job', () => {
 
     expect(job.compose()).toMatchSnapshot();
   });
+
+  it('can progressively restore a cache', () => {
+    const job = new Job('test-job')
+      .executor(docker)
+      .progressiveRestoreCache('v1-this-is-a-test');
+
+    expect(job.compose()).toMatchSnapshot();
+  });
+
+  it('can restore a cache progressively with a base', () => {
+    const job = new Job('test-job')
+      .executor(docker)
+      .progressiveRestoreCache('v1-this-is-a-test', 'v1-this-is');
+
+    expect(job.compose()).toMatchSnapshot();
+  });
+
+  it('can restore a cache progressively with no base (first item)', () => {
+    const job = new Job('test-job')
+      .executor(docker)
+      .progressiveRestoreCache('v1-this-is-a-test', '');
+
+    expect(job.compose()).toMatchSnapshot();
+  });
 });
