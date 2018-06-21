@@ -36,4 +36,3 @@ describe('Workflow', () => {
     expect(w.compose()).toMatchSnapshot();
   });
 });
-

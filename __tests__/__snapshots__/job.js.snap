@@ -13,7 +13,9 @@ Object {
 }
 `;
 
-exports[`Job complains if no executor 1`] = `"You must set an executor for \`test_job\`"`;
+exports[
+  `Job complains if no executor 1`
+] = `"You must set an executor for \`test_job\`"`;
 
 exports[`Job makes a more complex job 1`] = `
 Object {

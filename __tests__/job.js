@@ -11,8 +11,7 @@ function p(obj) {
 
 describe('Job', () => {
   it('can create a simple job', () => {
-    const job = new Job('test_job')
-      .executor(docker);
+    const job = new Job('test_job').executor(docker);
     expect(job.compose()).toMatchSnapshot();
   });
 
