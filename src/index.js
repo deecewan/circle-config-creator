@@ -16,8 +16,8 @@ export default class Config {
     const workflows = this.workflows
       .map(w => w.compose())
       .reduce((acc, curr) => ({ ...acc, ...curr }), {});
-    const jobs = this.workflow
-      .map(w => w.jobs.map(j => j.job))
+    const jobs = this.workflows
+      .map(w => w.jobs.map(j => j.job.compose()))
       .reduce((acc, curr) => acc.concat(curr), []);
     return {
       version: '2',

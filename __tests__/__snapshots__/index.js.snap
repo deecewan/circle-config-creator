@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`config creates a simple config 1`] = `
+Object {
+  "jobs": Array [
+    Object {
+      "test-job": Object {
+        "machine": Object {
+          "docker_layer_caching": false,
+          "enabled": true,
+          "image": "circleci/classic:latest",
+        },
+        "steps": Array [
+          "checkout",
+          Object {
+            "run": "echo \\"hello, world\\"",
+          },
+        ],
+      },
+    },
+  ],
+  "version": "2",
+  "workflows": Object {
+    "test-workflow": Object {
+      "jobs": Array [
+        "test-job",
+      ],
+    },
+    "version": "2",
+  },
+}
+`;
