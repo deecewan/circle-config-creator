@@ -6,13 +6,7 @@ import { type Executor } from './executors';
 
 type When = 'always' | 'on_success' | 'on_fail';
 type Environment = { [string]: string };
-type ResourceClass =
-  | 'small'
-  | 'medium'
-  | 'medium+'
-  | 'large'
-  | 'xlarge'
-  ;
+type ResourceClass = 'small' | 'medium' | 'medium+' | 'large' | 'xlarge';
 
 type RunConfig = {
   background?: boolean,
@@ -99,7 +93,9 @@ export default class Job {
       if (typeof value === 'string') {
         e = { [key]: value };
       } else {
-        throw new Error('If you provide an environment key, you must provide a string value');
+        throw new Error(
+          'If you provide an environment key, you must provide a string value',
+        );
       }
     } else {
       e = key;
@@ -243,9 +239,7 @@ export default class Job {
     if (!this.exec) {
       throw new Error(`You must set an executor for \`${this.name}\``);
     }
-    const branches = this.branchConfig
-      ? this.branchConfig.compose()
-      : {};
+    const branches = this.branchConfig ? this.branchConfig.compose() : {};
     return {
       [this.name]: {
         ...this.state,

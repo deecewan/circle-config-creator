@@ -9,8 +9,7 @@ type Version =
   | '9.2.0'
   | '9.1.0'
   | '9.0.1'
-  | '8.3.3'
-  ;
+  | '8.3.3';
 
 export default class MacOS implements Executor {
   version: Version;
