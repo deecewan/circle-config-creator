@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Workflow can create a simple workflow 1`] = `
+Object {
+  "test-workflow": Object {
+    "jobs": Array [
+      "test-job",
+    ],
+  },
+}
+`;
+
+exports[`Workflow can require another job to run 1`] = `
+Object {
+  "test-workflow": Object {
+    "jobs": Array [
+      Object {
+        "test-job": Object {
+          "requires": Array [
+            "required-by-test-job",
+          ],
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`Workflow can take triggers 1`] = `
+Object {
+  "test-workflow": Object {
+    "jobs": Array [],
+    "triggers": Array [
+      Object {
+        "schedule": Object {
+          "cron": "* * * * *",
+          "filters": Object {
+            "branches": Object {
+              "only": Array [
+                "test-branch",
+              ],
+            },
+          },
+        },
+      },
+    ],
+  },
+}
+`;

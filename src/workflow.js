@@ -18,18 +18,13 @@ type JobConfig = {
 export default class Workflow {
   name: string;
   jobs: Array<JobConfig> = [];
-  schedule: Array<Schedule> = [];
+  schedules: Array<Schedule> = [];
 
   constructor(name: string) {
     this.name = name;
   }
 
-  job(
-    job: Job,
-    requires: ?Array<Job>,
-    type: ?'approval',
-    context: ?string,
-  ) {
+  job(job: Job, requires: ?Array<Job>, type: ?'approval', context: ?string) {
     const config: JobConfig = { job };
     if (requires) {
       config.requires = requires;
@@ -46,18 +41,35 @@ export default class Workflow {
   }
 
   schedule(cron: string, filter: Branches) {
-    this.schedule.push({ cron, filters: filter.compose() });
+    this.schedules.push({ cron, filters: filter.compose() });
   }
 
   compose() {
+    const triggers =
+      this.schedules.length > 0
+        ? {
+            triggers: this.schedules.map(schedule => ({
+              schedule,
+            })),
+          }
+        : {};
     return {
       [this.name]: {
-        triggers: this.schedule.map(schedule => ({
-          schedule,
-        })),
-        jobs: this.jobs.map(({ job, ...rest }) => ({
-          [job.name]: rest,
-        })),
+        ...triggers,
+        jobs: this.jobs.map(({ job, ...rest }) => {
+          if (Object.keys(rest).length === 0) {
+            return job.name;
+          }
+          const requires = rest.requires
+            ? { requires: rest.requires.map(j => j.name) }
+            : {};
+          return {
+            [job.name]: {
+              ...rest,
+              ...requires,
+            },
+          };
+        }),
       },
     };
   }
