@@ -10,6 +10,8 @@ import executors from './executors';
 
 export { Workflow, Job, Branches, executors };
 
+const arrayToObject = a => a.reduce((acc, curr) => ({ ...acc, ...curr }), {});
+
 export default class Config {
   static CONFIG_LOCATION = '.circleci/config.yml';
   place: string = path.resolve(Config.CONFIG_LOCATION);
@@ -32,8 +34,8 @@ export default class Config {
       .map(w => w.compose())
       .reduce((acc, curr) => ({ ...acc, ...curr }), {});
     const jobs = this.workflows
-      .map(w => w.jobs.map(j => j.job.compose()))
-      .reduce((acc, curr) => acc.concat(curr), []);
+      .map(w => arrayToObject(w.jobs.map(j => j.job.compose())))
+      .reduce((acc, curr) => ({ ...acc, ...curr }), {});
     return {
       version: '2',
       workflows: {

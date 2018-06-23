@@ -2,140 +2,134 @@
 
 exports[`config creates a more complex config 1`] = `
 Object {
-  "jobs": Array [
-    Object {
-      "build": Object {
-        "branches": Object {
-          "ignore": Array [
-            "develop",
-            "feature-.*",
-          ],
-        },
-        "docker": Array [
-          Object {
-            "image": "ubuntu:14.04",
-          },
-          Object {
-            "command": Array [
-              "mongod",
-              "--smallfiles",
-            ],
-            "image": "mongo:2.6.8",
-          },
-          Object {
-            "environment": Object {
-              "POSTGRES_USER": "root",
-            },
-            "image": "postgres:9.4.1",
-          },
-          Object {
-            "image": "redis@sha256:54057dd7e125ca41afe526a877e8bd35ec2cdd33b9217e022ed37bdcf7d09673",
-          },
-          Object {
-            "image": "rabbitmq:3.5.4",
-          },
+  "jobs": Object {
+    "build": Object {
+      "branches": Object {
+        "ignore": Array [
+          "develop",
+          "feature-.*",
         ],
-        "environment": Object {
-          "TEST_REPORTS": "/tmp/test-reports",
+      },
+      "docker": Array [
+        Object {
+          "image": "ubuntu:14.04",
         },
-        "steps": Array [
-          "checkout",
-          Object {
-            "run": Object {
-              "command": "echo 127.0.0.1 devhost | sudo tee -a /etc/hosts",
-            },
+        Object {
+          "command": Array [
+            "mongod",
+            "--smallfiles",
+          ],
+          "image": "mongo:2.6.8",
+        },
+        Object {
+          "environment": Object {
+            "POSTGRES_USER": "root",
           },
-          Object {
-            "run": "-u root createuser -h localhost --superuser ubuntu && sudo createdb -h localhost test_db",
+          "image": "postgres:9.4.1",
+        },
+        Object {
+          "image": "redis@sha256:54057dd7e125ca41afe526a877e8bd35ec2cdd33b9217e022ed37bdcf7d09673",
+        },
+        Object {
+          "image": "rabbitmq:3.5.4",
+        },
+      ],
+      "environment": Object {
+        "TEST_REPORTS": "/tmp/test-reports",
+      },
+      "steps": Array [
+        "checkout",
+        Object {
+          "run": Object {
+            "command": "echo 127.0.0.1 devhost | sudo tee -a /etc/hosts",
           },
-          Object {
-            "restore_cache": Object {
-              "keys": Array [
-                "v1-my-project-{{ checksum \\"project.clj\\" }}",
-              ],
-              "name": "Restoring Cache",
-            },
+        },
+        Object {
+          "run": "-u root createuser -h localhost --superuser ubuntu && sudo createdb -h localhost test_db",
+        },
+        Object {
+          "restore_cache": Object {
+            "keys": Array [
+              "v1-my-project-{{ checksum \\"project.clj\\" }}",
+            ],
+            "name": "Restoring Cache",
           },
-          Object {
-            "run": Object {
-              "command": "set -xu
+        },
+        Object {
+          "run": Object {
+            "command": "set -xu
 mkdir -p \${TEST_REPORTS}
 run-tests.sh
 cp out/tests/*.xml \${TEST_REPORTS}",
-              "environment": Object {
-                "SSH_TARGET": "localhost",
-                "TEST_ENV": "linux",
-              },
+            "environment": Object {
+              "SSH_TARGET": "localhost",
+              "TEST_ENV": "linux",
             },
           },
-          Object {
-            "run": "set -xu
+        },
+        Object {
+          "run": "set -xu
 mkdir -p /tmp/artifacts
 create_jars.sh \${CIRCLE_BUILD_NUM}
 cp *.jar /tmp/artifacts",
+        },
+        Object {
+          "save_cache": Object {
+            "key": "v1-my-project-{{ checksum \\"project.clj\\" }}",
+            "name": "Saving Cache",
+            "paths": Array [
+              "~/.m2",
+            ],
+            "when": "on_success",
           },
-          Object {
-            "save_cache": Object {
-              "key": "v1-my-project-{{ checksum \\"project.clj\\" }}",
-              "name": "Saving Cache",
-              "paths": Array [
-                "~/.m2",
-              ],
-              "when": "on_success",
-            },
+        },
+        Object {
+          "store_artifacts": Object {
+            "destination": "build",
+            "path": "/tmp/artifacts",
           },
-          Object {
-            "store_artifacts": Object {
-              "destination": "build",
-              "path": "/tmp/artifacts",
-            },
+        },
+        Object {
+          "store_test_results": Object {
+            "path": "/tmp/test-reports",
           },
-          Object {
-            "store_test_results": Object {
-              "path": "/tmp/test-reports",
-            },
-          },
-        ],
-        "working_directory": "~/my-project",
-      },
+        },
+      ],
+      "working_directory": "~/my-project",
     },
-    Object {
-      "deploy-stage": Object {
-        "docker": Array [
-          Object {
-            "image": "ubuntu:14.04",
+    "deploy-prod": Object {
+      "docker": Array [
+        Object {
+          "image": "ubuntu:14.04",
+        },
+      ],
+      "steps": Array [
+        Object {
+          "run": Object {
+            "command": "ansible-playbook site.yml -i production",
+            "name": "Deploy if tests pass and branch is Master",
           },
-        ],
-        "steps": Array [
-          Object {
-            "run": Object {
-              "command": "ansible-playbook site.yml -i staging",
-              "name": "Deploy if tests pass and branch is Staging",
-            },
-          },
-        ],
-        "working_directory": "/tmp/my-project",
-      },
+        },
+      ],
+      "working_directory": "/tmp/my-project",
     },
-    Object {
-      "deploy-prod": Object {
-        "docker": Array [
-          Object {
-            "image": "ubuntu:14.04",
+    "deploy-stage": Object {
+      "docker": Array [
+        Object {
+          "image": "ubuntu:14.04",
+        },
+      ],
+      "steps": Array [
+        Object {
+          "run": Object {
+            "command": "ansible-playbook site.yml -i staging",
+            "name": "Deploy if tests pass and branch is Staging",
           },
-        ],
-        "steps": Array [
-          Object {
-            "run": Object {
-              "command": "ansible-playbook site.yml -i production",
-              "name": "Deploy if tests pass and branch is Master",
-            },
-          },
-        ],
-        "working_directory": "/tmp/my-project",
-      },
+        },
+      ],
+      "working_directory": "/tmp/my-project",
     },
-  ],
+  },
   "version": "2",
   "workflows": Object {
     "build-deploy": Object {
@@ -178,23 +172,21 @@ cp *.jar /tmp/artifacts",
 
 exports[`config creates a simple config 1`] = `
 Object {
-  "jobs": Array [
-    Object {
-      "test-job": Object {
-        "machine": Object {
-          "docker_layer_caching": false,
-          "enabled": true,
-          "image": "circleci/classic:latest",
-        },
-        "steps": Array [
-          "checkout",
-          Object {
-            "run": "echo \\"hello, world\\"",
-          },
-        ],
+  "jobs": Object {
+    "test-job": Object {
+      "machine": Object {
+        "docker_layer_caching": false,
+        "enabled": true,
+        "image": "circleci/classic:latest",
       },
+      "steps": Array [
+        "checkout",
+        Object {
+          "run": "echo \\"hello, world\\"",
+        },
+      ],
     },
-  ],
+  },
   "version": "2",
   "workflows": Object {
     "test-workflow": Object {
