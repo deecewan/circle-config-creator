@@ -146,7 +146,7 @@ export default class Job {
     key: string,
     paths: string | Array<string>,
     name: ?string = 'Saving Cache',
-    when: ?When = 'always',
+    when: ?When = 'on_success',
   ) {
     this.steps.push({
       save_cache: {

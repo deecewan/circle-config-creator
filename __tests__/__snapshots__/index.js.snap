@@ -81,7 +81,7 @@ cp *.jar /tmp/artifacts",
               "paths": Array [
                 "~/.m2",
               ],
-              "when": "always",
+              "when": "on_success",
             },
           },
           Object {
