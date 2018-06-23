@@ -37,9 +37,9 @@ export default class Config {
       .map(w => arrayToObject(w.jobs.map(j => j.job.compose())))
       .reduce((acc, curr) => ({ ...acc, ...curr }), {});
     return {
-      version: '2',
+      version: 2,
       workflows: {
-        version: '2',
+        version: 2,
         ...workflows,
       },
       jobs,

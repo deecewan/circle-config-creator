@@ -2,9 +2,9 @@
 # You should edit the source used to generate this config, or your changes will
 # be overwritten the next time the source is changed.
 
-version: '2'
+version: 2
 workflows:
-  version: '2'
+  version: 2
   build-and-test:
     jobs:
       - build
