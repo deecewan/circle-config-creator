@@ -15,43 +15,43 @@ workflows:
           requires:
             - build
 jobs:
-  - build:
-      docker:
-        - &ref_0
-          image: 'circleci/node:latest'
-      steps:
-        - checkout
-        - restore_cache:
-            keys:
-              - 'v1-deps-{{ checksum "yarn.lock" }}'
-              - v1-deps-
-            name: Restoring Cache
-        - run: yarn install --frozen-lockfile
-        - save_cache:
-            paths:
-              - ~/project
-            key: 'v1-repo-{{ .Revision }}'
-            name: Saving Cache
-            when: on_success
-        - save_cache:
-            paths:
-              - ~/project/node_modules
-            key: 'v1-deps-{{ checksum "yarn.lock" }}'
-            name: Saving Cache
-            when: on_success
-  - test:
-      docker:
-        - *ref_0
-      steps:
-        - restore_cache:
-            key: 'v1-repo-{{ .Revision }}'
-            name: Restoring Cache
-        - run: yarn jest
-  - lint:
-      docker:
-        - *ref_0
-      steps:
-        - restore_cache:
-            key: 'v1-repo-{{ .Revision }}'
-            name: Restoring Cache
-        - run: yarn lint
+  build:
+    docker:
+      - &ref_0
+        image: 'circleci/node:latest'
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - 'v1-deps-{{ checksum "yarn.lock" }}'
+            - v1-deps-
+          name: Restoring Cache
+      - run: yarn install --frozen-lockfile
+      - save_cache:
+          paths:
+            - ~/project
+          key: 'v1-repo-{{ .Revision }}'
+          name: Saving Cache
+          when: on_success
+      - save_cache:
+          paths:
+            - ~/project/node_modules
+          key: 'v1-deps-{{ checksum "yarn.lock" }}'
+          name: Saving Cache
+          when: on_success
+  test:
+    docker:
+      - *ref_0
+    steps:
+      - restore_cache:
+          key: 'v1-repo-{{ .Revision }}'
+          name: Restoring Cache
+      - run: yarn jest
+  lint:
+    docker:
+      - *ref_0
+    steps:
+      - restore_cache:
+          key: 'v1-repo-{{ .Revision }}'
+          name: Restoring Cache
+      - run: yarn lint
