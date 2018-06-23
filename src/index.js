@@ -4,6 +4,11 @@ import fs from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
 import Workflow from './workflow';
+import Job from './job';
+import Branches from './branches';
+import executors from './executors';
+
+export { Workflow, Job, Branches, executors };
 
 export default class Config {
   static CONFIG_LOCATION = '.circleci/config.yml';
