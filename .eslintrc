@@ -1,7 +1,9 @@
 {
   "extends": ["@deecewan/eslint-config-flow"],
+  "plugins": [
+    "prettier"
+  ],
   "rules": {
-    // i want to use 'private' instance variables
-    "no-underscore-dangle": 0
+    "prettier/prettier": "error"
   }
 }
