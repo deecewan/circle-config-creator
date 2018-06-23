@@ -47,6 +47,10 @@
   "lint-staged": {
     "*.js": [
       "eslint"
+    ],
+    ".config/*.js": [
+      "babel-node .circleci/config.js",
+      "git add .circleci/config.yml"
     ]
   }
 }
