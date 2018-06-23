@@ -106,7 +106,6 @@ Object {
       Object {
         "run": Object {
           "command": "echo \\"Job is over\\"",
-          "no_output_timeout": undefined,
           "working_directory": "~/project",
         },
       },

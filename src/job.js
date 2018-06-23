@@ -36,8 +36,8 @@ function normalizeRunConfig(runConfig: string | RunConfig) {
 
   return {
     ...rest,
-    no_output_timeout: noOutputTimeout,
-    working_directory: workingDirectory,
+    ...(noOutputTimeout ? { no_output_timeout: noOutputTimeout } : {}),
+    ...(workingDirectory ? { working_directory: workingDirectory } : {}),
   };
 }
 

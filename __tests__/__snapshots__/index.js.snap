@@ -43,8 +43,6 @@ Object {
           Object {
             "run": Object {
               "command": "echo 127.0.0.1 devhost | sudo tee -a /etc/hosts",
-              "no_output_timeout": undefined,
-              "working_directory": undefined,
             },
           },
           Object {
@@ -68,8 +66,6 @@ cp out/tests/*.xml \${TEST_REPORTS}",
                 "SSH_TARGET": "localhost",
                 "TEST_ENV": "linux",
               },
-              "no_output_timeout": undefined,
-              "working_directory": undefined,
             },
           },
           Object {
@@ -115,8 +111,6 @@ cp *.jar /tmp/artifacts",
             "run": Object {
               "command": "ansible-playbook site.yml -i staging",
               "name": "Deploy if tests pass and branch is Staging",
-              "no_output_timeout": undefined,
-              "working_directory": undefined,
             },
           },
         ],
@@ -135,8 +129,6 @@ cp *.jar /tmp/artifacts",
             "run": Object {
               "command": "ansible-playbook site.yml -i production",
               "name": "Deploy if tests pass and branch is Master",
-              "no_output_timeout": undefined,
-              "working_directory": undefined,
             },
           },
         ],
