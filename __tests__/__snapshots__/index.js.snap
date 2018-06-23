@@ -130,7 +130,7 @@ cp *.jar /tmp/artifacts",
       "working_directory": "/tmp/my-project",
     },
   },
-  "version": "2",
+  "version": 2,
   "workflows": Object {
     "build-deploy": Object {
       "jobs": Array [
@@ -165,7 +165,7 @@ cp *.jar /tmp/artifacts",
         },
       ],
     },
-    "version": "2",
+    "version": 2,
   },
 }
 `;
@@ -187,14 +187,14 @@ Object {
       ],
     },
   },
-  "version": "2",
+  "version": 2,
   "workflows": Object {
     "test-workflow": Object {
       "jobs": Array [
         "test-job",
       ],
     },
-    "version": "2",
+    "version": 2,
   },
 }
 `;
