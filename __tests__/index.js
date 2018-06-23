@@ -1,5 +1,6 @@
 /* @flow */
 
+import fs from 'fs';
 import Config from '../src';
 import Workflow from '../src/workflow';
 import Job from '../src/job';
@@ -18,7 +19,7 @@ describe('config', () => {
     expect(c.compose()).toMatchSnapshot();
   });
 
-  it('creates a more complex config', () => {
+  function createComplexConfig() {
     const buildImage = new Docker()
       .image('ubuntu:14.04').done()
       .image('mongo:2.6.8')
@@ -47,22 +48,22 @@ describe('config', () => {
       .progressiveRestoreCache('v1-my-project-{{ checksum "project.clj" }}', 'v1-my-project-')
       .run({
         environment: {
-         SSH_TARGET: 'localhost',
+          SSH_TARGET: 'localhost',
           TEST_ENV: 'linux',
         },
         command: [
           'set -xu',
           'mkdir -p ${TEST_REPORTS}',
           'run-tests.sh',
-          'cp out/tests/*.xml ${TEST_REPORTS}'
+          'cp out/tests/*.xml ${TEST_REPORTS}',
         ].join('\n'),
       })
       .run([
-          'set -xu',
+        'set -xu',
         'mkdir -p /tmp/artifacts',
-          'create_jars.sh ${CIRCLE_BUILD_NUM}',
-          'cp *.jar /tmp/artifacts'
-        ].join('\n'))
+        'create_jars.sh ${CIRCLE_BUILD_NUM}',
+        'cp *.jar /tmp/artifacts',
+      ].join('\n'))
       .saveCache('~/.m2', 'v1-my-project-{{ checksum "project.clj" }}')
       .storeArtifacts('/tmp/artifacts', 'build')
       .storeTestResults('/tmp/test-reports');
@@ -89,6 +90,16 @@ describe('config', () => {
       .job(deployProd, [build], masterBranch);
     config.workflow(buildDeploy);
 
+    return config;
+  }
+
+  it('creates a more complex config', () => {
+    const config = createComplexConfig();
     expect(config.compose()).toMatchSnapshot();
+  });
+
+  it('turns a complex config into yaml without error', () => {
+    const config = createComplexConfig();
+    expect(() => config.dump()).not.toThrowError();
   });
 });
