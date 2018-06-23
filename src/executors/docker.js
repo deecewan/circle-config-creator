@@ -1,19 +1,6 @@
 /* @flow */
 
-import type { Executor } from './';
-
-type Auth = { password: string, username: string };
-type AwsAuth = { aws_access_key_id: string, aws_secret_access_key: string };
-type ImageData = {
-  auth?: Auth,
-  aws_auth?: AwsAuth,
-  command?: Array<string>,
-  entrypoint?: Array<string>,
-  environment?: { [string]: string },
-  image: string,
-  name?: string,
-  user?: string,
-};
+import type { Executor, ImageData, AwsAuth, Auth } from './types';
 
 class Image {
   parent: Docker;

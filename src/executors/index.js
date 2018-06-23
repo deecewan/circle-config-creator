@@ -1,6 +1,7 @@
 /* @flow */
 
-export interface Executor {
-  // eslint-disable-next-line flowtype/no-weak-types
-  compose(): { ['macos' | 'machine']: Object } | { ['docker']: Array<any> };
-}
+import Docker from './docker';
+import Machine from './machine';
+import MacOS from './macos';
+
+export default { Docker, Machine, MacOS };

@@ -1,15 +1,9 @@
 /* @flow */
 
-import type { Executor } from './';
-
-type MachineData = {
-  docker_layer_caching: boolean,
-  enabled: boolean,
-  image: string,
-};
+import type { Executor, MachineShape } from './types';
 
 export default class Machine implements Executor {
-  state: MachineData = {
+  state: MachineShape = {
     enabled: true,
     image: 'circleci/classic:latest',
     docker_layer_caching: false,
