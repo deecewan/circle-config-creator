@@ -1,6 +1,5 @@
 /* @flow */
 
-import fs from 'fs';
 import Config from '../src';
 import Workflow from '../src/workflow';
 import Job from '../src/job';
@@ -10,10 +9,12 @@ import Branches from '../src/branches';
 
 describe('config', () => {
   it('creates a simple config', () => {
-    const workflow = new Workflow('test-workflow').job(new Job('test-job')
-      .checkout()
-      .run('echo "hello, world"')
-      .executor(new Machine()));
+    const workflow = new Workflow('test-workflow').job(
+      new Job('test-job')
+        .checkout()
+        .run('echo "hello, world"')
+        .executor(new Machine()),
+    );
     const c = new Config().workflow(workflow);
 
     expect(c.compose()).toMatchSnapshot();
@@ -21,14 +22,17 @@ describe('config', () => {
 
   function createComplexConfig() {
     const buildImage = new Docker()
-      .image('ubuntu:14.04').done()
+      .image('ubuntu:14.04')
+      .done()
       .image('mongo:2.6.8')
       .command('mongod', '--smallfiles')
       .done()
       .image('postgres:9.4.1')
       .environment({ POSTGRES_USER: 'root' })
       .done()
-      .image('redis@sha256:54057dd7e125ca41afe526a877e8bd35ec2cdd33b9217e022ed37bdcf7d09673')
+      .image(
+        'redis@sha256:54057dd7e125ca41afe526a877e8bd35ec2cdd33b9217e022ed37bdcf7d09673',
+      )
       .done()
       .image('rabbitmq:3.5.4')
       .done();
@@ -44,8 +48,13 @@ describe('config', () => {
       .branches(branchesToIgnore)
       .checkout()
       .run({ command: 'echo 127.0.0.1 devhost | sudo tee -a /etc/hosts' })
-      .run('-u root createuser -h localhost --superuser ubuntu && sudo createdb -h localhost test_db')
-      .progressiveRestoreCache('v1-my-project-{{ checksum "project.clj" }}', 'v1-my-project-')
+      .run(
+        '-u root createuser -h localhost --superuser ubuntu && sudo createdb -h localhost test_db',
+      )
+      .progressiveRestoreCache(
+        'v1-my-project-{{ checksum "project.clj" }}',
+        'v1-my-project-',
+      )
       .run({
         environment: {
           SSH_TARGET: 'localhost',
@@ -53,17 +62,22 @@ describe('config', () => {
         },
         command: [
           'set -xu',
+          // eslint-disable-next-line no-template-curly-in-string
           'mkdir -p ${TEST_REPORTS}',
           'run-tests.sh',
+          // eslint-disable-next-line no-template-curly-in-string
           'cp out/tests/*.xml ${TEST_REPORTS}',
         ].join('\n'),
       })
-      .run([
-        'set -xu',
-        'mkdir -p /tmp/artifacts',
-        'create_jars.sh ${CIRCLE_BUILD_NUM}',
-        'cp *.jar /tmp/artifacts',
-      ].join('\n'))
+      .run(
+        [
+          'set -xu',
+          'mkdir -p /tmp/artifacts',
+          // eslint-disable-next-line no-template-curly-in-string
+          'create_jars.sh ${CIRCLE_BUILD_NUM}',
+          'cp *.jar /tmp/artifacts',
+        ].join('\n'),
+      )
       .saveCache('v1-my-project-{{ checksum "project.clj" }}', '~/.m2')
       .storeArtifacts('/tmp/artifacts', 'build')
       .storeTestResults('/tmp/test-reports');

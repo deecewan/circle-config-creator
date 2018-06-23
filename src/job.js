@@ -177,7 +177,9 @@ export default class Job {
 
   progressiveRestoreCache(key: string, base: ?string) {
     const b = base == null ? '' : base;
-    console.log('[Warn] Progressive cache restore is very experimental and may not work with every configuration style');
+    console.log(
+      '[Warn] Progressive cache restore is very experimental and may not work with every configuration style',
+    );
     if (key.indexOf(b) !== 0) {
       throw new Error('`key` must start with `base`.');
     }

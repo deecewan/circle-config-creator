@@ -55,7 +55,7 @@ export default class Config {
 
     const p = path.resolve(this.place);
     return new Promise((resolve, reject) => {
-      fs.writeFile(p, dump, (err) => {
+      fs.writeFile(p, dump, err => {
         if (cb) {
           cb(err);
         }

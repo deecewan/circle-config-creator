@@ -25,7 +25,13 @@ export default class Workflow {
     this.name = name;
   }
 
-  job(job: Job, requires: ?Array<Job>, filter: ?Branches, type: ?'approval', context: ?string) {
+  job(
+    job: Job,
+    requires: ?Array<Job>,
+    filter: ?Branches,
+    type: ?'approval',
+    context: ?string,
+  ) {
     const config: JobConfig = { job };
     if (requires) {
       config.requires = requires;
@@ -68,7 +74,7 @@ export default class Workflow {
             ? { requires: rest.requires.map(j => j.name) }
             : {};
           const filters = rest.filters
-            ? { filters: rest.filters.compose()}
+            ? { filters: rest.filters.compose() }
             : {};
           return {
             [job.name]: {

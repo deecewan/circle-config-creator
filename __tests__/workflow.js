@@ -4,11 +4,6 @@ import Workflow from '../src/workflow';
 import Job from '../src/job';
 import Branches from '../src/branches';
 
-function p(obj) {
-  // eslint-disable-next-line no-console
-  console.log(JSON.stringify(obj, null, 2));
-}
-
 describe('Workflow', () => {
   it('can create a simple workflow', () => {
     const w = new Workflow('test-workflow');

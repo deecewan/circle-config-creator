@@ -5,10 +5,6 @@ import Docker from '../src/executors/docker';
 
 const docker = new Docker('test-image:latest');
 
-function p(obj) {
-  console.log(JSON.stringify(obj, null, 2));
-}
-
 describe('Job', () => {
   it('can create a simple job', () => {
     const job = new Job('test_job').executor(docker);

@@ -1,7 +1,11 @@
 {
-  "extends": ["@deecewan/eslint-config-flow"],
+  "extends": [
+    "@deecewan/eslint-config-flow",
+    "prettier",
+    "prettier/flowtype"
+  ],
   "plugins": [
-    "prettier"
+    "prettier",
   ],
   "rules": {
     "prettier/prettier": "error"

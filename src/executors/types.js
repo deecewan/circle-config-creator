@@ -1,7 +1,10 @@
 /* @flow */
 
 export type Auth = { password: string, username: string };
-export type AwsAuth = { aws_access_key_id: string, aws_secret_access_key: string };
+export type AwsAuth = {
+  aws_access_key_id: string,
+  aws_secret_access_key: string,
+};
 
 export type ImageData = {
   auth?: Auth,
@@ -37,5 +40,5 @@ export interface Executor {
   compose():
     | { macos: MacOSShape }
     | { machine: MachineShape }
-    | { docker: Array<ImageData> },
+    | { docker: Array<ImageData> };
 }

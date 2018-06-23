@@ -2,35 +2,35 @@
 /* eslint no-console: 0 */
 
 export default class Branches {
-  _hasOnly: boolean = false;
-  _hasIgnore: boolean = false;
-  _hasWarned: boolean = false;
+  hasOnly: boolean = false;
+  hasIgnore: boolean = false;
+  hasWarned: boolean = false;
   onlyBranches: Array<string> = [];
   ignoreBranches: Array<string> = [];
 
   ignore(...branch: Array<string>) {
-    if (!this._hasWarned && this._hasOnly) {
+    if (!this.hasWarned && this.hasOnly) {
       console.log(
         '[Warn] Adding `ignore` branches will result in `only` branches being ignored',
       );
-      this._hasWarned = true;
+      this.hasWarned = true;
     }
 
-    this._hasIgnore = true;
+    this.hasIgnore = true;
     this.ignoreBranches.push(...branch);
 
     return this;
   }
 
   only(...branch: Array<string>) {
-    if (!this._hasWarned && this._hasIgnore) {
+    if (!this.hasWarned && this.hasIgnore) {
       console.log(
         '[Warn] Adding `ignore` branches will result in `only` branches being ignored',
       );
-      this._hasWarned = true;
+      this.hasWarned = true;
     }
 
-    this._hasOnly = true;
+    this.hasOnly = true;
     this.onlyBranches.push(...branch);
 
     return this;
