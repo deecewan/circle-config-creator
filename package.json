@@ -32,6 +32,7 @@
   },
   "scripts": {
     "build": "babel -d lib src",
+    "build:circle-config": "babel-node .circleci/config.js",
     "format": "prettier --write 'src/**/*.js'",
     "lint": "eslint src __tests__ .circleci",
     "test": "jest"
