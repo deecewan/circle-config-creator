@@ -64,7 +64,7 @@ describe('config', () => {
         'create_jars.sh ${CIRCLE_BUILD_NUM}',
         'cp *.jar /tmp/artifacts',
       ].join('\n'))
-      .saveCache('~/.m2', 'v1-my-project-{{ checksum "project.clj" }}')
+      .saveCache('v1-my-project-{{ checksum "project.clj" }}', '~/.m2')
       .storeArtifacts('/tmp/artifacts', 'build')
       .storeTestResults('/tmp/test-reports');
 

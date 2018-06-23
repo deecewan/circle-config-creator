@@ -2,7 +2,7 @@
 /* eslint no-console: 0 */
 
 import Branches from './branches';
-import { type Executor } from './executors';
+import { type Executor } from './executors/types';
 
 type When = 'always' | 'on_success' | 'on_fail';
 type Environment = { [string]: string };
@@ -143,8 +143,8 @@ export default class Job {
   }
 
   saveCache(
-    paths: string | Array<string>,
     key: string,
+    paths: string | Array<string>,
     name: ?string = 'Saving Cache',
     when: ?When = 'always',
   ) {
