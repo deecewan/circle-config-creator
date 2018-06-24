@@ -20,7 +20,7 @@ export default class Config {
   clone() {
     const item = new this.constructor();
     item.place = this.place;
-    item.workflows = this.workflows;
+    item.workflows = [...this.workflows];
 
     return item;
   }

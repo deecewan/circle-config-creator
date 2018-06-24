@@ -28,8 +28,8 @@ export default class Workflow {
   clone() {
     const item = new this.constructor(this.name);
     item.name = this.name;
-    item.jobs = this.jobs;
-    item.schedules = this.schedules;
+    item.jobs = [...this.jobs];
+    item.schedules = [...this.schedules];
 
     return item;
   }

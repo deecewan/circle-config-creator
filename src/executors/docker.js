@@ -18,7 +18,7 @@ class Image {
 
   clone() {
     const clone = new this.constructor(this.data.image, this.parent);
-    clone.data = this.data;
+    clone.data = { ...this.data };
     clone.parent = this.parent;
 
     return clone;

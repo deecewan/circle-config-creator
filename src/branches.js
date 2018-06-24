@@ -12,8 +12,8 @@ export default class Branches {
     const item = new this.constructor();
     item.hasOnly = this.hasOnly;
     item.hasIgnore = this.hasIgnore;
-    item.onlyBranches = this.onlyBranches;
-    item.ignoreBranches = this.ignoreBranches;
+    item.onlyBranches = [...this.onlyBranches];
+    item.ignoreBranches = [...this.ignoreBranches];
 
     return item;
   }
