@@ -59,32 +59,47 @@ export default class Job {
   state: State = {};
   // eslint-disable-next-line flowtype/no-weak-types
   steps: Array<Object | string> = [];
+  exec: Executor;
+  branchConfig: Branches;
 
   constructor(name: string) {
     checkName(name);
     this.name = name;
   }
 
-  shell(sh: string) {
-    this.state.shell = sh;
+  clone() {
+    const clone = new this.constructor(this.name);
+    clone.name = this.name;
+    clone.state = this.state;
+    clone.steps = this.steps;
+    clone.exec = this.exec;
+    clone.branchConfig = this.branchConfig;
+    return clone;
+  }
 
-    return this;
+  shell(sh: string) {
+    const clone = this.clone();
+    clone.state.shell = sh;
+
+    return clone;
   }
 
   workingDirectory(directory: string) {
-    this.state.working_directory = directory;
-    return this;
+    const clone = this.clone();
+    clone.state.working_directory = directory;
+    return clone;
   }
 
   parallelism(p: number) {
-    this.state.parallelism = p;
-    return this;
+    const clone = this.clone();
+    clone.state.parallelism = p;
+    return clone;
   }
 
-  exec: Executor;
   executor(executor: Executor) {
-    this.exec = executor;
-    return this;
+    const clone = this.clone();
+    clone.exec = executor;
+    return clone;
   }
 
   environment(key: Environment | string, value: ?string) {
@@ -101,45 +116,50 @@ export default class Job {
       e = key;
     }
 
-    this.state.environment = this.state.environment || {};
+    const clone = this.clone();
+    clone.state.environment = clone.state.environment || {};
 
-    Object.assign(this.state.environment, e);
+    Object.assign(clone.state.environment, e);
 
-    return this;
+    return clone;
   }
 
-  branchConfig: Branches;
   branches(b: Branches) {
-    this.branchConfig = b;
-    return this;
+    const clone = this.clone();
+    clone.branchConfig = b;
+    return clone;
   }
 
   resourceClass(resourceClass: ResourceClass) {
-    this.state.resource_class = resourceClass;
-    return this;
+    const clone = this.clone();
+    clone.state.resource_class = resourceClass;
+    return clone;
   }
 
   run(command: string | RunConfig) {
-    this.steps.push({ run: normalizeRunConfig(command) });
+    const clone = this.clone();
+    clone.steps.push({ run: normalizeRunConfig(command) });
 
-    return this;
+    return clone;
   }
 
   checkout(path: ?string) {
+    const clone = this.clone();
     const c = path ? { checkout: { path } } : 'checkout';
-    this.steps.push(c);
+    clone.steps.push(c);
 
-    return this;
+    return clone;
   }
 
   setupRemoteDocker(dockerLayerCaching: ?boolean = false) {
-    this.steps.push({
+    const clone = this.clone();
+    clone.steps.push({
       setup_remote_docker: {
         docker_layer_caching: dockerLayerCaching,
       },
     });
 
-    return this;
+    return clone;
   }
 
   saveCache(
@@ -148,7 +168,8 @@ export default class Job {
     name: ?string = 'Saving Cache',
     when: ?When = 'on_success',
   ) {
-    this.steps.push({
+    const clone = this.clone();
+    clone.steps.push({
       save_cache: {
         paths: [].concat(paths),
         key,
@@ -157,25 +178,27 @@ export default class Job {
       },
     });
 
-    return this;
+    return clone;
   }
 
   restoreCache(
     keys: string | Array<string>,
     name: ?string = 'Restoring Cache',
   ) {
+    const clone = this.clone();
     const k = Array.isArray(keys) ? { keys } : { key: keys };
-    this.steps.push({
+    clone.steps.push({
       restore_cache: {
         ...k,
         name,
       },
     });
 
-    return this;
+    return clone;
   }
 
   progressiveRestoreCache(key: string, base: ?string) {
+    const clone = this.clone();
     const b = base == null ? '' : base;
     console.log(
       '[Warn] Progressive cache restore is very experimental and may not work with every configuration style',
@@ -189,69 +212,75 @@ export default class Job {
       keys.push(`${b}${split.slice(0, i).join('-')}-`);
     }
 
-    return this.restoreCache(keys);
+    return clone.restoreCache(keys);
   }
 
   deploy(command: string | RunConfig) {
-    this.steps.push({
+    const clone = this.clone();
+    clone.steps.push({
       deploy: normalizeRunConfig(command),
     });
 
-    return this;
+    return clone;
   }
 
   storeArtifacts(path: string, destination: ?string) {
-    this.steps.push({
+    const clone = this.clone();
+    clone.steps.push({
       store_artifacts: {
         path,
         destination,
       },
     });
 
-    return this;
+    return clone;
   }
 
   storeTestResults(path: string) {
-    this.steps.push({
+    const clone = this.clone();
+    clone.steps.push({
       store_test_results: {
         path,
       },
     });
 
-    return this;
+    return clone;
   }
 
   persistToWorkspace(root: string, paths: string | Array<string>) {
-    this.steps.push({
+    const clone = this.clone();
+    clone.steps.push({
       persist_to_workspace: {
         root,
         paths: [].concat(paths),
       },
     });
 
-    return this;
+    return clone;
   }
 
   attachWorkspace(at: string) {
-    this.steps.push({
+    const clone = this.clone();
+    clone.steps.push({
       attach_workspace: { at },
     });
 
-    return this;
+    return clone;
   }
 
   addSSHKeys(fingerprints: ?(string | Array<string>)) {
+    const clone = this.clone();
     if (fingerprints !== undefined) {
-      this.steps.push('add_ssh_keys');
+      clone.steps.push('add_ssh_keys');
     } else {
-      this.steps.push({
+      clone.steps.push({
         add_ssh_keys: {
           fingerprints,
         },
       });
     }
 
-    return this;
+    return clone;
   }
 
   compose() {
