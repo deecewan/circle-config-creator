@@ -70,8 +70,8 @@ export default class Job {
   clone() {
     const clone = new this.constructor(this.name);
     clone.name = this.name;
-    clone.state = this.state;
-    clone.steps = this.steps;
+    clone.state = { ...this.state };
+    clone.steps = [...this.steps];
     clone.exec = this.exec;
     clone.branchConfig = this.branchConfig;
     return clone;
