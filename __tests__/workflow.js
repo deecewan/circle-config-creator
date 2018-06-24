@@ -25,8 +25,7 @@ describe('Workflow', () => {
   it('can take triggers', () => {
     const branches = new Branches().only('test-branch');
 
-    const w = new Workflow('test-workflow');
-    w.schedule('* * * * *', branches);
+    const w = new Workflow('test-workflow').schedule('* * * * *', branches);
 
     expect(w.compose()).toMatchSnapshot();
   });

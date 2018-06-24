@@ -25,6 +25,15 @@ export default class Workflow {
     this.name = name;
   }
 
+  clone() {
+    const item = new this.constructor(this.name);
+    item.name = this.name;
+    item.jobs = [...this.jobs];
+    item.schedules = [...this.schedules];
+
+    return item;
+  }
+
   job(
     job: Job,
     requires: ?Array<Job>,
@@ -45,13 +54,17 @@ export default class Workflow {
     if (filter) {
       config.filters = filter;
     }
-    this.jobs.push(config);
+    const item = this.clone();
+    item.jobs.push(config);
 
-    return this;
+    return item;
   }
 
   schedule(cron: string, filter: Branches) {
-    this.schedules.push({ cron, filters: filter.compose() });
+    const item = this.clone();
+    item.schedules.push({ cron, filters: filter.compose() });
+
+    return item;
   }
 
   compose() {

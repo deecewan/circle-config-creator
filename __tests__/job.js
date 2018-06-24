@@ -49,4 +49,11 @@ describe('Job', () => {
 
     expect(job.compose()).toMatchSnapshot();
   });
+
+  it('can be updated immutably', () => {
+    const jobOne = new Job('test-job');
+    const jobTwo = jobOne.progressiveRestoreCache('v1-this-is-a-test');
+
+    expect(jobOne).not.toEqual(jobTwo);
+  });
 });

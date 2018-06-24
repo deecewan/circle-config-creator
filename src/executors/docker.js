@@ -16,46 +16,61 @@ class Image {
     this.parent = parent;
   }
 
-  auth(auth: Auth) {
-    this.data.auth = auth;
+  clone() {
+    const clone = new this.constructor(this.data.image, this.parent);
+    clone.data = { ...this.data };
+    clone.parent = this.parent;
 
-    return this;
+    return clone;
+  }
+
+  auth(auth: Auth) {
+    const clone = this.clone();
+    clone.data.auth = auth;
+
+    return clone;
   }
 
   awsAuth(awsAuth: AwsAuth) {
-    this.data.aws_auth = awsAuth;
+    const clone = this.clone();
+    clone.data.aws_auth = awsAuth;
 
-    return this;
+    return clone;
   }
 
   command(...command: Array<string>) {
-    this.data.command = command;
+    const clone = this.clone();
+    clone.data.command = command;
 
-    return this;
+    return clone;
   }
 
   entrypoint(...entrypoint: Array<string>) {
-    this.data.entrypoint = entrypoint;
+    const clone = this.clone();
+    clone.data.entrypoint = entrypoint;
 
-    return this;
+    return clone;
   }
 
   environment(env: { [string]: string }) {
-    this.data.environment = env;
+    const clone = this.clone();
+    clone.data.environment = env;
 
-    return this;
+    return clone;
   }
 
   name(name: string) {
-    this.data.name = name;
+    const clone = this.clone();
+    clone.data.name = name;
 
-    return this;
+    return clone;
   }
 
   user(user: string) {
-    this.data.user = user;
+    const clone = this.clone();
+    clone.data.user = user;
 
-    return this;
+    return clone;
   }
 
   compose() {
@@ -63,8 +78,9 @@ class Image {
   }
 
   done() {
-    this.parent.images.push(this);
-    return this.parent;
+    const clone = this.clone();
+    clone.parent.images.push(clone);
+    return clone.parent;
   }
 }
 
@@ -77,8 +93,15 @@ export default class Docker implements Executor {
     }
   }
 
+  clone() {
+    const clone = new this.constructor();
+    clone.images = [...this.images];
+    return clone;
+  }
+
   image(image: string) {
-    return new Image(image, this);
+    const clone = this.clone();
+    return new Image(image, clone);
   }
 
   compose(): { docker: Array<ImageData> } {

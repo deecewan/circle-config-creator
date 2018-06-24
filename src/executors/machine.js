@@ -13,18 +13,32 @@ export default class Machine implements Executor {
     this.state.enabled = enabled;
   }
 
+  clone() {
+    const clone = new this.constructor(this.state.enabled);
+    clone.state = {
+      ...this.state,
+    };
+
+    return clone;
+  }
+
   enabled(enabled: boolean) {
-    this.state.enabled = enabled;
-    return this;
+    const clone = this.clone();
+    clone.state.enabled = enabled;
+    return clone;
   }
 
   image(image: string) {
-    this.state.image = image;
-    return this;
+    const clone = this.clone();
+    clone.state.image = image;
+    return clone;
   }
 
   dockerLayerCaching(enabled: boolean) {
-    this.state.docker_layer_caching = enabled;
+    const clone = this.clone();
+    clone.state.docker_layer_caching = enabled;
+
+    return clone;
   }
 
   compose() {

@@ -17,16 +17,26 @@ export default class Config {
   place: string = path.resolve(Config.CONFIG_LOCATION);
   workflows: Array<Workflow> = [];
 
-  workflow(workflow: Workflow) {
-    this.workflows.push(workflow);
+  clone() {
+    const item = new this.constructor();
+    item.place = this.place;
+    item.workflows = [...this.workflows];
 
-    return this;
+    return item;
+  }
+
+  workflow(workflow: Workflow) {
+    const item = this.clone();
+    item.workflows.push(workflow);
+
+    return item;
   }
 
   location(directory: string = __dirname) {
-    this.place = path.resolve(directory, this.constructor.CONFIG_LOCATION);
+    const item = this.clone();
+    item.place = path.resolve(directory, item.constructor.CONFIG_LOCATION);
 
-    return this;
+    return item;
   }
 
   compose() {

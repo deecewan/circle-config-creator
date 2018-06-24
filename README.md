@@ -86,9 +86,8 @@ config
 
 ## API
 
-All methods are chainable (unless otherwise stated), but not immutable. They
-work on a single instance. This is subject to change, so I wouldn't rely on it
-too much.
+Methods are designed to build out configs in a chain. All chainable methods
+return a copy (operations are immutable).
 
 ### Config
 
@@ -300,7 +299,9 @@ branches(branches: Branches) => Job
 
 The branch filter config to apply to this job. Note that this will apply at the
 workflow level, not at the job level. [See CircleCI Docs](https://circleci.com/docs/2.0/configuration-reference/#branches-1).
-This is a big reason that immutability might be added (so branches can be set inside different workflows).
+You can take advantage of immutability by settings branches on a job as you pass
+it in to the workflow. This was, you have one `Job`, and can set branches
+differently per-workflow.
 
 **Params**
 

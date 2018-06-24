@@ -8,32 +8,44 @@ export default class Branches {
   onlyBranches: Array<string> = [];
   ignoreBranches: Array<string> = [];
 
+  clone() {
+    const item = new this.constructor();
+    item.hasOnly = this.hasOnly;
+    item.hasIgnore = this.hasIgnore;
+    item.onlyBranches = [...this.onlyBranches];
+    item.ignoreBranches = [...this.ignoreBranches];
+
+    return item;
+  }
+
   ignore(...branch: Array<string>) {
-    if (!this.hasWarned && this.hasOnly) {
+    const item = this.clone();
+    if (!item.hasWarned && item.hasOnly) {
       console.log(
         '[Warn] Adding `ignore` branches will result in `only` branches being ignored',
       );
-      this.hasWarned = true;
+      item.hasWarned = true;
     }
 
-    this.hasIgnore = true;
-    this.ignoreBranches.push(...branch);
+    item.hasIgnore = true;
+    item.ignoreBranches.push(...branch);
 
-    return this;
+    return item;
   }
 
   only(...branch: Array<string>) {
-    if (!this.hasWarned && this.hasIgnore) {
+    const item = this.clone();
+    if (!item.hasWarned && item.hasIgnore) {
       console.log(
         '[Warn] Adding `ignore` branches will result in `only` branches being ignored',
       );
-      this.hasWarned = true;
+      item.hasWarned = true;
     }
 
-    this.hasOnly = true;
-    this.onlyBranches.push(...branch);
+    item.hasOnly = true;
+    item.onlyBranches.push(...branch);
 
-    return this;
+    return item;
   }
 
   compose() {
