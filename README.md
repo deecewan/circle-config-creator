@@ -122,6 +122,8 @@ Write the config to `.circleci/config.yml`
 | disclaimer | boolean                         | true      | Add a disclaimer to the top of the generated file, warning that changes will be overwritten. |
 | callback   | (optional) (?ErrnoError) => any | undefined | Node-style callback for write completion                                                     |
 
+<hr />
+
 ```
 writeSync(disclaimer: boolean) => void
 ```
@@ -512,3 +514,195 @@ addSSHKeys(fingerprints: ?(string | Array<string>)) => Job
 | Name         | Type                              | Default        | Description                                         |
 |--------------|-----------------------------------|----------------|-----------------------------------------------------|
 | fingerprints | (optional) string | Array<string> | (all SSH keys) | the fingerprint (or fingerprints) to add to the job |
+
+### Executors
+
+Executors are the environment in which your job will run. Every job must be
+assigned *exactly* one environment. The generator will throw an error if none
+are specified. If you try and set more than one, the second will overwrite the
+first.
+
+It is likely a good idea to create your standard executor as a variable, and
+pass the same one into all the jobs that need it.
+
+You can access the executors in the following way:
+
+`import { executors } from 'circle-config-generator';`
+
+#### Docker
+
+[CircleCI Docs](https://circleci.com/docs/2.0/configuration-reference/#docker)
+
+`constructor(): Docker`
+
+There is an alternative constructor, which is likely the one you'll use. It
+accepts an image string which is a convenient way to instantiate the executor if
+you don't need multiple images to run together.
+
+`constructor(image: string) => Docker`
+
+<hr />
+
+The remainder of the `Docker` API is adding an image, configuring that image,
+and finally calling `.done()` on the image to close it and add it to the Docker
+executor. You can add as many images as you like to the `Docker` container.
+
+To add an image,
+
+```
+image(image: string) => Image
+```
+
+**Params**
+
+| Name  | Type   | Default    | Description                             |
+|-------|--------|------------|-----------------------------------------|
+| image | string | (required) | The name of the docker image to be used |
+
+<hr />
+
+##### Image
+
+See the non-required fields of the [CircleCI Docker
+Docs](https://circleci.com/docs/2.0/configuration-reference/#docker) for the
+meanings of the fields
+
+```
+auth(auth: { username: string, password: string }) => Image
+```
+
+<hr />
+
+```
+awsAuth(auth: {
+  aws_access_key_id: string,
+  aws_secret_access_key: string,
+}) => Image
+```
+
+<hr />
+
+```
+command(...command: Array<string>) => Image
+```
+
+<hr />
+
+```
+entrypoint(...entrypoint: Array<string>) => Image
+```
+
+<hr />
+
+```
+environment(env: { [key: string]: string }) => Image
+```
+
+<hr />
+
+```
+name(name: string) => Image
+```
+
+<hr />
+
+```
+user(user: string) => Image
+```
+
+<hr />
+
+```
+done() => Docker
+```
+
+This closes up the image and returns back the parent `Docker` container.
+
+#### Machine
+
+Creates the machine executor.
+
+[CircleCI Docs](https://circleci.com/docs/2.0/configuration-reference/#machine)
+
+`constructor(enabled: ?boolean) => Machine`
+
+**Params**
+
+| Name    | Type    | Default | Description             |
+|---------|---------|---------|-------------------------|
+| enabled | boolean | true    | Is the machine enabled? |
+
+<hr />
+
+```
+enabled(enabled: boolean) => Machine
+```
+
+**Params**
+
+| Name    | Type    | Default    | Description             |
+|---------|---------|------------|-------------------------|
+| enabled | boolean | (required) | Is the machine enabled? |
+
+<hr />
+
+```
+image(image: string) => Machine
+```
+
+**Params**
+
+| Name  | Type   | Default    | Description                      |
+|-------|--------|------------|----------------------------------|
+| image | string | (required) | The image to use for the machine |
+
+<hr />
+
+```
+dockerLayerCaching(enabled: boolean) => Machine
+```
+
+**Params**
+
+| Name    | Type    | Default    | Description                                     |
+|---------|---------|------------|-------------------------------------------------|
+| enabled | boolean | (required) | Should this machine enable Docker layer caching |
+
+#### MacOS
+
+Creates a macOS executor.
+
+[CircleCI Docs](https://circleci.com/docs/2.0/configuration-reference/#macos)
+
+`constructor(version: string) => MacOS`
+
+**Params**
+
+| Name    | Type   | Default    | Description                                                                                                               |
+|---------|--------|------------|---------------------------------------------------------------------------------------------------------------------------|
+| version | string | (required) | Version of macOS to run - check [here](https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions) for full list |
+
+### Branches
+
+This is used to set which branches a particular `Job` or `Workflow` will run on.
+
+`constructor() => Branches`
+
+<hr />
+
+```
+ignore(...branches: Array<string>) => Branches
+```
+
+Sets branches that should be ignored by the Job or Trigger using this instance
+*Note:* Setting this will override any `Branches#only` branches that have been
+set.
+
+<hr />
+
+```
+only(...branches: Array<string>) => Branches
+```
+
+Filter down to only run on the branches passed in.
+
