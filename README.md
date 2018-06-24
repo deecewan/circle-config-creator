@@ -67,11 +67,15 @@ too much.
 
 `constructor() => Config`;
 
+<hr />
+
 ```
 workflow(workflow: Workflow) => Config
 ```
 
 Add a workflow to the config
+
+<hr />
 
 ```
 location(directory: string) => Config
@@ -87,17 +91,23 @@ Change the location that the config will be saved to. This will *always* save to
 the directory you pass in, in the `.circleci/config.yml` file.
 Defaults to `__dirname` (the current directory)
 
+<hr />
+
 ```
 compose() => Object
 ```
 
 Generate a JavaScript object based on the `Job`s and `Workflow`s added
 
+<hr />
+
 ```
 dump() => string
 ```
 
 Generate `yaml` from the `Job`s and `Workflow`s added
+
+<hr />
 
 ```
 write(disclaimer: boolean, callback: ?((?ErrnoError) => mixed)) => Promise<void>
@@ -128,6 +138,8 @@ Write the config synchronously to `.circleci/config.yml`
 
 `constructor(name: string) => Workflow`
 
+<hr />
+
 ```
 job(
   job: Job,
@@ -150,6 +162,8 @@ Add a job to this workflow
 | type     | (optional) oneOf('approval')     | undefined  | The job type. See CircleCI config docs for more           |
 | context  | (optional) string                | undefined  | The context of the job. See CircleCI config docs for more |
 
+<hr />
+
 ```
 schedule(cron: string, filter: Branches) => Workflow
 ```
@@ -167,6 +181,8 @@ Add a schedule to run this job against (see triggers on CircleCI docs)
 
 `constructor(name: string) => Job`
 
+<hr />
+
 ```
 shell(shell: string) => Job
 ```
@@ -181,6 +197,8 @@ Change the shell this job runs with
 |-------|--------|------------|------------------------------|
 | shell | string | (required) | The shell to run this job in |
 
+<hr />
+
 ```
 workingDirectory(directory: string) => Job
 ```
@@ -193,6 +211,8 @@ workingDirectory(directory: string) => Job
 |-----------|--------|------------|--------------------------------|
 | directory | string | (required) | The directory this job runs in |
 
+<hr />
+
 ```
 parallelism(p: number) => Job
 ```
@@ -204,6 +224,8 @@ parallelism(p: number) => Job
 | Name | Type   | Default    | Description                   |
 |------|--------|------------|-------------------------------|
 | p    | number | (required) | The number to run in parallel |
+
+<hr />
 
 ```
 executor(executor: Executor) => Job
@@ -218,6 +240,8 @@ The executor to run the job in. This *must* be set.
 | Name     | Type                  | Default    | Description                     |
 |----------|-----------------------|------------|---------------------------------|
 | executor | [Executor](#executor) | (required) | The executor to run this job in |
+
+<hr />
 
 ```
 environment(environment: { [key: string]: string }) => Job
@@ -237,6 +261,8 @@ This will *append* to any environment you've already added. Callable multiple ti
 | key         | string               | (required) | The environment key                                   |
 | value       | string               | (required) | The environment value                                 |
 
+<hr />
+
 ```
 branches(branches: Branches) => Job
 ```
@@ -253,6 +279,8 @@ This is a big reason that immutability might be added (so branches can be set in
 |----------|-----------------------|------------|-------------------------------------------------|
 | branches | [Branches](#branches) | (required) | The branch config for this job to run inside of |
 
+<hr />
+
 ```
 resourceClass(resourceClass: 'small' | 'medium' | 'medium+' | 'large' | 'xlarge') => Job
 ```
@@ -264,6 +292,8 @@ resourceClass(resourceClass: 'small' | 'medium' | 'medium+' | 'large' | 'xlarge'
 | Name          | Type   | Default    | Description                                 |
 |---------------|--------|------------|---------------------------------------------|
 | resourceClass | string | (required) | The resource class for this job's container |
+
+<hr />
 
 ```
 run(command: string) => Job
@@ -284,6 +314,8 @@ run(config: {
 See [the docs](https://circleci.com/docs/2.0/configuration-reference/#run) for
 the param meanings
 
+<hr />
+
 ```
 checkout(path: ?string) => Job
 ```
@@ -296,6 +328,8 @@ checkout(path: ?string) => Job
 |------|-------------------|-----------|----------------------------------|
 | path | (optional) string | ~/project | The path to checkout the code to |
 
+<hr />
+
 ```
 setupRemoteDocker(dockerLayerCaching: boolean = false) => Job
 ```
@@ -307,6 +341,8 @@ setupRemoteDocker(dockerLayerCaching: boolean = false) => Job
 | Name               | Type               | Default | Description                 |
 |--------------------|--------------------|---------|-----------------------------|
 | dockerLayerCaching | (optional) boolean | false   | Enable docker layer caching |
+
+<hr />
 
 ```
 saveCache(
@@ -328,6 +364,8 @@ saveCache(
 | name  | string                                   | 'Saving Cache' | The message to display when this step is running                       |
 | when  | oneOf('always', 'on_success', 'on_fail') | 'on_success'   | When to save this cache. Defaults to saving when the job is successful |
 
+<hr />
+
 ```
 restoreCache(key: string | Array<string>, name: string = 'Restoring Cache') => Job
 ```
@@ -340,6 +378,8 @@ restoreCache(key: string | Array<string>, name: string = 'Restoring Cache') => J
 |------|--------|-------------------|--------------------------------------------------|
 | key  | string | (required)        | The keys to (attempt) to restore from            |
 | name | string | 'Restoring Cache' | The message to display when this step is running |
+
+<hr />
 
 ```
 progressiveRestoreCache(key: string, base: ?string) => Job
@@ -380,6 +420,8 @@ Will result in trying to restore the following
 | key  | string            | (required)     | The full key to try restoring from |
 | base | (optional) string | (see examples) | The base key of the cache          |
 
+<hr />
+
 ```
 deploy(command: string) => Job
 deploy(config: {
@@ -399,6 +441,8 @@ deploy(config: {
 [See Job#run](#run) and [the related CircleCI docs](https://circleci.com/docs/2.0/configuration-reference/#run)
 for param information.
 
+<hr />
+
 ```
 storeArtifacts(path: string, destination: ?string) => Job
 ```
@@ -412,6 +456,8 @@ storeArtifacts(path: string, destination: ?string) => Job
 | path        | string            | (required) | The directory to save as build artifacts                |
 | destination | (optional) string | undefined  | Prefix added to the artifact paths in the artifacts API |
 
+<hr />
+
 ```
 storeTestResults(path: string) => Job
 ```
@@ -423,6 +469,8 @@ storeTestResults(path: string) => Job
 | Name | Type   | Default    | Description                  |
 |------|--------|------------|------------------------------|
 | path | string | (required) | The path to the test results |
+
+<hr />
 
 ```
 persistToWorkspace(root: string, paths: string | Array<string>) => Job
@@ -437,6 +485,8 @@ persistToWorkspace(root: string, paths: string | Array<string>) => Job
 | root  | string                 | (required) | An absolute path or one relative to the `working_directory` |
 | paths | string | Array<string> | (required) | Paths to add to the shared workspace                        |
 
+<hr />
+
 ```
 attachWorkspace(at: string) => Job
 ```
@@ -448,6 +498,8 @@ attachWorkspace(at: string) => Job
 | Name | Type   | Default    | Description                              |
 |------|--------|------------|------------------------------------------|
 | at   | string | (required) | The directory to attach the workspace at |
+
+<hr />
 
 ```
 addSSHKeys(fingerprints: ?(string | Array<string>)) => Job
