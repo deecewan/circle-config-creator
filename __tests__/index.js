@@ -97,12 +97,11 @@ describe('config', () => {
         command: 'ansible-playbook site.yml -i production',
       });
 
-    const config = new Config();
     const buildDeploy = new Workflow('build-deploy')
       .job(build)
       .job(deployStage, [build], stagingBranch)
       .job(deployProd, [build], masterBranch);
-    config.workflow(buildDeploy);
+    const config = new Config().workflow(buildDeploy);
 
     return config;
   }
