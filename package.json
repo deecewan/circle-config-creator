@@ -5,6 +5,10 @@
   "repository": "https://github.com/deecewan/circle-config-creator",
   "author": "David Buchan-Swanson <david.buchanswanson@gmail.com>",
   "license": "MIT",
+  "files": [
+    "lib",
+    "src"
+  ],
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.51",
     "@babel/core": "^7.0.0-beta.51",
@@ -42,7 +46,7 @@
   },
   "husky": {
     "hooks": {
-      "precommit": "flow && lint-staged"
+      "pre-commit": "flow && lint-staged"
     }
   },
   "lint-staged": {
