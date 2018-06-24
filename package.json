@@ -1,6 +1,6 @@
 {
   "name": "circle-config-creator",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "main": "lib/index.js",
   "repository": "https://github.com/deecewan/circle-config-creator",
   "author": "David Buchan-Swanson <david.buchanswanson@gmail.com>",
@@ -39,6 +39,7 @@
     "build:circle-config": "babel-node .circleci/config.js",
     "format": "prettier --write 'src/**/*.js'",
     "lint": "eslint src __tests__ .circleci",
+    "prepublish": "yarn build",
     "test": "jest"
   },
   "dependencies": {
