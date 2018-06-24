@@ -2,9 +2,32 @@
 
 > A simple helper to create CircleCI configs
 
-[![npm](https://img.shields.io/npm/v/circle-config-creator.svg)](https://yarnpkg.com/en/package/circle-config-creator)
-
-[![CircleCI](https://img.shields.io/circleci/project/github/deecewan/circle-config-creator.svg)](https://circleci.com/gh/deecewan/workflows/circle-config-creator)
+<p align="center">
+  <a href="https://yarnpkg.com/en/package/circle-config-creator">
+    <img
+      alt="NPM Version"
+      src="https://img.shields.io/npm/v/circle-config-creator.svg"
+    >
+  </a>
+  <a href="https://circleci.com/gh/deecewan/workflows/circle-config-creator">
+    <img
+      alt="CircleCI Build Status"
+      src="https://img.shields.io/circleci/project/github/deecewan/circle-config-creator.svg"
+    >
+  </a>
+  <a href="https://github.com/prettier/prettier">
+    <img
+      alt="code style: prettier"
+      src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg"
+    >
+  </a>
+  <a href="https://twitter.com/acdlite/status/974390255393505280">
+    <img
+      alt="Blazing Fast"
+      src="https://img.shields.io/badge/speed-blazing%20%F0%9F%94%A5-brightgreen.svg"
+    >
+  </a>
+</p>
 
 ## Overview
 
