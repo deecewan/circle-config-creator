@@ -2,6 +2,10 @@
 
 > A simple helper to create CircleCI configs
 
+[![npm](https://img.shields.io/npm/v/circle-config-creator.svg)](https://yarnpkg.com/en/package/circle-config-creator)
+
+[![CircleCI](https://img.shields.io/circleci/project/github/deecewan/circle-config-creator.svg)](https://circleci.com/gh/deecewan/workflows/circle-config-creator)
+
 ## Overview
 
 I noticed that a lot of my CircleCI config was repetitive. I had written a small
