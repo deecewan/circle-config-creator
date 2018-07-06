@@ -212,6 +212,21 @@ Add a schedule to run this job against (see triggers on CircleCI docs)
 <hr />
 
 ```
+updateName(name: string) => Job
+```
+
+Update the name of a job. Useful if you want to take an existing job and modify
+it slightly to create a new job from it.
+
+**Params**
+
+| Name | Type   | Default    | Description                  |
+|------|--------|------------|------------------------------|
+| name | string | (required) | The shell to run this job in |
+
+<hr />
+
+```
 shell(shell: string) => Job
 ```
 

@@ -297,4 +297,10 @@ export default class Job {
       },
     };
   }
+
+  updateName(name: string) {
+    const clone = this.clone();
+    clone.name = name;
+    return clone;
+  }
 }
