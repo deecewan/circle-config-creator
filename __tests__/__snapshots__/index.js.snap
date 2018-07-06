@@ -1,5 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`config can create workflows with approval jobs 1`] = `
+Object {
+  "jobs": Object {
+    "test-job": Object {
+      "docker": Array [
+        Object {
+          "image": "test-image",
+        },
+      ],
+      "steps": Array [
+        Object {
+          "run": "echo \\"hello\\"",
+        },
+      ],
+    },
+  },
+  "version": 2,
+  "workflows": Object {
+    "approval-test": Object {
+      "jobs": Array [
+        Object {
+          "hold": Object {
+            "type": "approval",
+          },
+        },
+        Object {
+          "test-job": Object {
+            "requires": Array [
+              "hold",
+            ],
+          },
+        },
+      ],
+    },
+    "version": 2,
+  },
+}
+`;
+
 exports[`config creates a more complex config 1`] = `
 Object {
   "jobs": Object {

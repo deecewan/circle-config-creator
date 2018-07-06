@@ -115,4 +115,19 @@ describe('config', () => {
     const config = createComplexConfig();
     expect(() => config.dump()).not.toThrowError();
   });
+
+  it('can create workflows with approval jobs', () => {
+    const approvalJob = new Job('hold').type('approval');
+    const otherJob = new Job('test-job')
+      .executor(new Docker('test-image'))
+      .run('echo "hello"');
+
+    const workflow = new Workflow('approval-test')
+      .job(approvalJob)
+      .job(otherJob, [approvalJob]);
+
+    const config = new Config().workflow(workflow);
+
+    expect(config.compose()).toMatchSnapshot();
+  });
 });

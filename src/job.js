@@ -61,6 +61,7 @@ export default class Job {
   steps: Array<Object | string> = [];
   exec: Executor;
   branchConfig: Branches;
+  jobType: 'approval';
 
   constructor(name: string) {
     checkName(name);
@@ -247,6 +248,13 @@ export default class Job {
     return clone;
   }
 
+  type(type: 'approval') {
+    const clone = this.clone();
+    clone.jobType = type;
+
+    return clone;
+  }
+
   persistToWorkspace(root: string, paths: string | Array<string>) {
     const clone = this.clone();
     clone.steps.push({
@@ -284,7 +292,7 @@ export default class Job {
   }
 
   compose() {
-    if (!this.exec) {
+    if (!this.exec && this.jobType !== 'approval') {
       throw new Error(`You must set an executor for \`${this.name}\``);
     }
     const branches = this.branchConfig ? this.branchConfig.compose() : {};

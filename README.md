@@ -173,7 +173,7 @@ job(
   job: Job,
   requires: ?Array<Job>,
   filter: ?Branches,
-  type: ?'approval',
+  type: ?'approval', // Deprecated - use [Job](#job)#type
   context: ?string,
 ) => Workflow
 ```
@@ -182,13 +182,13 @@ Add a job to this workflow
 
 **Params**
 
-| Name     | Type                             | Default    | Description                                               |
-|----------|----------------------------------|------------|-----------------------------------------------------------|
-| job      | [Job](#job)                      | (required) | The job to add to the workflow                            |
-| requires | (optional) Array<[Job](#job)>    | []         | Any jobs that this job requires                           |
-| filter   | (optional) [Branches](#branches) | undefined  | Filter the branches that this job runs for                |
-| type     | (optional) oneOf('approval')     | undefined  | The job type. See CircleCI config docs for more           |
-| context  | (optional) string                | undefined  | The context of the job. See CircleCI config docs for more |
+| Name     | Type                             | Default    | Description                                                                         |
+|----------|----------------------------------|------------|-------------------------------------------------------------------------------------|
+| job      | [Job](#job)                      | (required) | The job to add to the workflow                                                      |
+| requires | (optional) Array<[Job](#job)>    | []         | Any jobs that this job requires                                                     |
+| filter   | (optional) [Branches](#branches) | undefined  | Filter the branches that this job runs for                                          |
+| type     | (optional) oneOf('approval')     | undefined  | The job type. See CircleCI config docs for more (Deprecated - use [Job](#job)#type) |
+| context  | (optional) string                | undefined  | The context of the job. See CircleCI config docs for more                           |
 
 <hr />
 
@@ -557,6 +557,28 @@ addSSHKeys(fingerprints: ?(string | Array<string>)) => Job
 | Name         | Type                              | Default        | Description                                         |
 |--------------|-----------------------------------|----------------|-----------------------------------------------------|
 | fingerprints | (optional) string | Array<string> | (all SSH keys) | the fingerprint (or fingerprints) to add to the job |
+
+<hr />
+
+```
+type(type: 'approval') => Job
+```
+
+[CircleCI Docs](https://circleci.com/docs/2.0/configuration-reference/#type)
+
+This is technically a configuration setting for a [Workflow](#workflow), but is
+used in the workflow config as a job. If you apply this setting to a job, it
+will *not* appear in your Job list (so it makes no sense to give it any other
+configuration options). Jobs with a `type` of `approval` also do not need to
+have an executor set.
+
+At this point, there is only one `type` supported by CircleCI: `approval`.
+
+**Params**
+
+| Name | Type       | Default    | Description          |
+|------|------------|------------|----------------------|
+| type | 'approval' | (required) | The type for the job |
 
 ### Executors
 

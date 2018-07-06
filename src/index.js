@@ -44,7 +44,11 @@ export default class Config {
       .map(w => w.compose())
       .reduce((acc, curr) => ({ ...acc, ...curr }), {});
     const jobs = this.workflows
-      .map(w => arrayToObject(w.jobs.map(j => j.job.compose())))
+      .map(w =>
+        arrayToObject(
+          w.jobs.filter(j => j.type !== 'approval').map(j => j.job.compose()),
+        ),
+      )
       .reduce((acc, curr) => ({ ...acc, ...curr }), {});
     return {
       version: 2,

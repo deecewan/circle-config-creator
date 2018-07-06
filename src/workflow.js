@@ -41,12 +41,19 @@ export default class Workflow {
     type: ?'approval',
     context: ?string,
   ) {
+    if (type != null) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        'Passing `type` to Workflow#job is deprecated. Use Job#type instead. This will be removed in the next major version',
+      );
+    }
     const config: JobConfig = { job };
     if (requires) {
       config.requires = requires;
     }
-    if (type) {
-      config.type = type;
+    const t = type || job.jobType;
+    if (t) {
+      config.type = t;
     }
     if (context) {
       config.context = context;
