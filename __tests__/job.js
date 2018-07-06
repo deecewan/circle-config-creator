@@ -56,4 +56,14 @@ describe('Job', () => {
 
     expect(jobOne).not.toEqual(jobTwo);
   });
+
+  it('can add ssh keys', () => {
+    const job = new Job('test-job').executor(docker);
+
+    expect(job.addSSHKeys('fingerprint').compose()).toMatchSnapshot();
+
+    expect(job.addSSHKeys().compose()).toMatchSnapshot();
+
+    expect(job.addSSHKeys(['fingerprint']).compose()).toMatchSnapshot();
+  });
 });

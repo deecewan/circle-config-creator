@@ -1,5 +1,62 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Job can add ssh keys 1`] = `
+Object {
+  "test-job": Object {
+    "docker": Array [
+      Object {
+        "image": "test-image:latest",
+      },
+    ],
+    "steps": Array [
+      Object {
+        "add_ssh_keys": Object {
+          "fingerprints": Array [
+            "fingerprint",
+          ],
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`Job can add ssh keys 2`] = `
+Object {
+  "test-job": Object {
+    "docker": Array [
+      Object {
+        "image": "test-image:latest",
+      },
+    ],
+    "steps": Array [
+      "add_ssh_keys",
+    ],
+  },
+}
+`;
+
+exports[`Job can add ssh keys 3`] = `
+Object {
+  "test-job": Object {
+    "docker": Array [
+      Object {
+        "image": "test-image:latest",
+      },
+    ],
+    "steps": Array [
+      Object {
+        "add_ssh_keys": Object {
+          "fingerprints": Array [
+            "fingerprint",
+          ],
+        },
+      },
+    ],
+  },
+}
+`;
+
 exports[`Job can create a simple job 1`] = `
 Object {
   "test_job": Object {

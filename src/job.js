@@ -270,12 +270,12 @@ export default class Job {
 
   addSSHKeys(fingerprints: ?(string | Array<string>)) {
     const clone = this.clone();
-    if (fingerprints !== undefined) {
+    if (fingerprints === undefined) {
       clone.steps.push('add_ssh_keys');
     } else {
       clone.steps.push({
         add_ssh_keys: {
-          fingerprints,
+          fingerprints: [].concat(fingerprints),
         },
       });
     }
