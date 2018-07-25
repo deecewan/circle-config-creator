@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint no-console: 0 */
 
-import Branches from './branches';
+import Filter from './filter';
 import { type Executor } from './executors/types';
 
 type When = 'always' | 'on_success' | 'on_fail';
@@ -60,7 +60,7 @@ export default class Job {
   // eslint-disable-next-line flowtype/no-weak-types
   steps: Array<Object | string> = [];
   exec: Executor;
-  branchConfig: Branches;
+  branchConfig: Filter;
   jobType: 'approval';
 
   constructor(name: string) {
@@ -125,7 +125,7 @@ export default class Job {
     return clone;
   }
 
-  branches(b: Branches) {
+  branches(b: Filter) {
     const clone = this.clone();
     clone.branchConfig = b;
     return clone;

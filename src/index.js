@@ -5,10 +5,12 @@ import path from 'path';
 import yaml from 'js-yaml';
 import Workflow from './workflow';
 import Job from './job';
+import Filter from './filter';
+// deprecated
 import Branches from './branches';
 import executors from './executors';
 
-export { Workflow, Job, Branches, executors };
+export { Workflow, Job, Branches, Filter, executors };
 
 const arrayToObject = a => a.reduce((acc, curr) => ({ ...acc, ...curr }), {});
 

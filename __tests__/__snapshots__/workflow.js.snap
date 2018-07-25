@@ -47,3 +47,31 @@ Object {
   },
 }
 `;
+
+exports[`Workflow can trigger based on tags 1`] = `
+Object {
+  "test-workflow": Object {
+    "jobs": Array [],
+    "triggers": Array [
+      Object {
+        "schedule": Object {
+          "cron": "* * * * *",
+          "filters": Object {
+            "branches": Object {
+              "ignore": Array [
+                "master",
+                "release",
+              ],
+            },
+            "tags": Object {
+              "only": Array [
+                "/v.*/",
+              ],
+            },
+          },
+        },
+      },
+    ],
+  },
+}
+`;

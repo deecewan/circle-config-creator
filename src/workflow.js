@@ -1,7 +1,7 @@
 /* @flow */
 
 import Job from './job';
-import Branches from './branches';
+import Filter from './filter';
 
 type Schedule = {
   cron: string,
@@ -10,7 +10,7 @@ type Schedule = {
 
 type JobConfig = {
   context?: string,
-  filters?: Branches,
+  filters?: Filter,
   job: Job,
   requires?: Array<Job>,
   type?: 'approval',
@@ -37,7 +37,7 @@ export default class Workflow {
   job(
     job: Job,
     requires: ?Array<Job>,
-    filter: ?Branches,
+    filter: ?Filter,
     type: ?'approval',
     context: ?string,
   ) {
@@ -67,7 +67,7 @@ export default class Workflow {
     return item;
   }
 
-  schedule(cron: string, filter: Branches) {
+  schedule(cron: string, filter: Filter) {
     const item = this.clone();
     item.schedules.push({ cron, filters: filter.compose() });
 

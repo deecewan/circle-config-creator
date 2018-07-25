@@ -2,6 +2,7 @@
 
 import Workflow from '../src/workflow';
 import Job from '../src/job';
+import Filter from '../src/filter';
 import Branches from '../src/branches';
 
 describe('Workflow', () => {
@@ -27,6 +28,19 @@ describe('Workflow', () => {
 
     const w = new Workflow('test-workflow').schedule('* * * * *', branches);
 
+    expect(w.compose()).toMatchSnapshot();
+  });
+
+  it('can trigger based on tags', () => {
+    const filter = new Filter()
+      .branches({
+        ignore: ['master', 'release'],
+      })
+      .tags({
+        only: ['/v.*/'],
+      });
+
+    const w = new Workflow('test-workflow').schedule('* * * * *', filter);
     expect(w.compose()).toMatchSnapshot();
   });
 });
